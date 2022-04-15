@@ -7,7 +7,7 @@ import (
 
 // User Model
 type User struct {
-	ID        int       `json:"union_id"`
+	UnionID        int       `json:"union_id"`
 	Name      string    `json:"name"`
 	Password  string    `json:"password"`
 	AvatarUrl string    `json:"avatar_url"`

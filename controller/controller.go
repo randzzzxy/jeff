@@ -31,12 +31,12 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, "Invalid json provided")
 		return
 	}
-	user, err := models.GetUserInfo(u.ID)
+	user, err := models.GetUserInfo(u.UnionID)
 	if err != nil || user.Password != u.Password {
 		c.JSON(http.StatusUnauthorized, "Please provide valid login details")
 		return
 	}
-	token, err := utils.CreateToken(user.ID)
+	token, err := utils.CreateToken(user.UnionID)
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, err.Error())
 		return
