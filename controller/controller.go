@@ -44,15 +44,19 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, token)
 }
 
-func ValidateToken(c *gin.Context) {
+func ValidateTokenHandler(c *gin.Context) {
 	tokenString := c.GetHeader("Authorization")
 	if tokenString == "" {
 		c.JSON(http.StatusForbidden, "The authorization token is abnormal.")
-	}
-	token, err := utils.ValidateToken(tokenString)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, "invalid token")
+		c.Abort()
 		return
 	}
-	c.JSON(http.StatusOK, token)
+	claims, err := utils.ValidateToken(tokenString)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, "invalid token")
+		c.Abort()
+		return
+	}
+	c.Set("user_id", claims.Id)
+	c.Next() // 后续的处理函数可以用过c.Get("username")来获取当前请求的用户信息
 }

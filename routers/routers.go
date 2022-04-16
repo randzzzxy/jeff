@@ -18,8 +18,12 @@ func SetupRouter() *gin.Engine {
 		userGroup.POST("/register", controller.RegisterNewAccount)
 		// 登陆
 		userGroup.POST("/login", controller.Login)
-		//验证
-		userGroup.POST("/validate", controller.ValidateToken)
+	}
+	musicGroup := r.Group("music")
+	musicGroup.Use(controller.ValidateTokenHandler)
+	{
+		// 上传歌曲
+		musicGroup.POST("/upload")
 	}
 	return r
 }

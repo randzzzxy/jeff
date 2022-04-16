@@ -34,12 +34,12 @@ func CreateToken(id int) (string, error) {
 }
 
 // ValidateToken 验证token
-func ValidateToken(tokenString string) (*jwt.Token, error) {
-	token, _, err := ParseToken(tokenString)
+func ValidateToken(tokenString string) (*Claims, error) {
+	token, claims, err := ParseToken(tokenString)
 	if err != nil || !token.Valid {
 		return nil, err
 	}
-	return token, nil
+	return claims, nil
 }
 
 func ParseToken(tokenString string) (*jwt.Token, *Claims, error) {
