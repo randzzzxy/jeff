@@ -11,6 +11,16 @@ func SetupRouter() *gin.Engine {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.Default()
+	//文件
+	fileGroup := r.Group("file")
+	{
+		//音乐文件
+		fileGroup.GET("/song", controller.GetSongResource)
+		//图片
+		fileGroup.GET("/cover", controller.GetCoverResource)
+		//歌词文件
+		fileGroup.GET("/lyrics", controller.GetLyricsResource)
+	}
 	// 用户
 	userGroup := r.Group("user")
 	{
@@ -23,7 +33,7 @@ func SetupRouter() *gin.Engine {
 	musicGroup.Use(controller.ValidateTokenHandler)
 	{
 		// 上传歌曲
-		musicGroup.POST("/upload")
+		musicGroup.POST("/upload", controller.UploadMusic)
 	}
 	return r
 }
