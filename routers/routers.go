@@ -32,8 +32,28 @@ func SetupRouter() *gin.Engine {
 	musicGroup := r.Group("music")
 	musicGroup.Use(controller.ValidateTokenHandler)
 	{
+		// 创建歌单
+		musicGroup.POST("/playlist", controller.CreatePlayList)
+		// 获取歌单
+		musicGroup.GET("/playlist", controller.GetPlayLists)
+		// 收藏歌曲
+		musicGroup.POST("/collect", controller.CollectSongToPlayList)
+		// 获取歌单歌曲
+		musicGroup.GET("collect", controller.GetPlayList)
 		// 上传歌曲
 		musicGroup.POST("/upload", controller.UploadMusic)
+	}
+	commentGroup := r.Group("comment")
+	commentGroup.Use(controller.ValidateTokenHandler)
+	{
+		// 评论
+		commentGroup.POST("/comment", controller.CreateComment)
+		// 获取评论
+		commentGroup.GET("/comment", controller.GetComments)
+		// 回复
+		commentGroup.POST("/reply", controller.CreateReply)
+		// 获取回复
+		commentGroup.GET("reply", controller.GetReplies)
 	}
 	return r
 }
