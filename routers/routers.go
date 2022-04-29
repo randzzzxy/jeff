@@ -53,7 +53,7 @@ func SetupRouter() *gin.Engine {
 		// 回复
 		commentGroup.POST("/reply", controller.CreateReply)
 		// 获取回复
-		commentGroup.GET("reply", controller.GetReplies)
+		commentGroup.GET("/reply", controller.GetReplies)
 	}
 	return r
 }
