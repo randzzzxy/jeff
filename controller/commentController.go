@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
-	"time"
 )
 
 // CreateComment  创建歌单
@@ -15,9 +14,8 @@ func CreateComment(c *gin.Context) {
 	c.BindJSON(&json)
 	id, _ := c.Get("user_id")
 	comment.UserId = id.(int)
-	comment.SongId = json["song_id"].(int)
+	comment.SongId = int(json["song_id"].(float64))
 	comment.Comment = json["comment"].(string)
-	comment.CreatedAt = json["created_at"].(time.Time)
 	err := models.CreateComment(comment)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
@@ -45,8 +43,8 @@ func CreateReply(c *gin.Context) {
 	c.BindJSON(&json)
 	id, _ := c.Get("user_id")
 	reply.UserId = id.(int)
+	reply.CommentId = int(json["comment_id"].(float64))
 	reply.Reply = json["reply"].(string)
-	reply.CreatedAt = json["created_at"].(time.Time)
 	err := models.CreateReply(reply)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})

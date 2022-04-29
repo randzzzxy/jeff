@@ -2,15 +2,13 @@ package models
 
 import (
 	"JeffMusic/dao"
-	"time"
 )
 
 type Comment struct {
-	Id        int       `json:"id"`
-	Comment   string    `json:"comment"`
-	SongId    int       `json:"song_id"`
-	UserId    int       `json:"user_id"`
-	CreatedAt time.Time `json:"created_at"`
+	Id      int    `json:"id"`
+	Comment string `json:"comment"`
+	SongId  int    `json:"song_id"`
+	UserId  int    `json:"user_id"`
 }
 
 func CreateComment(comment *Comment) (err error) {

@@ -2,15 +2,13 @@ package models
 
 import (
 	"JeffMusic/dao"
-	"time"
 )
 
 type Reply struct {
-	Id        int       `json:"id"`
-	Reply     string    `json:"reply"`
-	CommentId int       `json:"comment_id"`
-	UserId    int       `json:"user_id"`
-	CreatedAt time.Time `json:"created_at"`
+	Id        int    `json:"id"`
+	Reply     string `json:"reply"`
+	CommentId int    `json:"comment_id"`
+	UserId    int    `json:"user_id"`
 }
 
 func CreateReply(reply *Reply) (err error) {
