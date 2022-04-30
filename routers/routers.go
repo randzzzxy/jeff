@@ -32,6 +32,8 @@ func SetupRouter() *gin.Engine {
 	musicGroup := r.Group("music")
 	musicGroup.Use(controller.ValidateTokenHandler)
 	{
+		//获取歌曲
+		musicGroup.GET("/all", controller.GetSongs)
 		// 创建歌单
 		musicGroup.POST("/playlist", controller.CreatePlayList)
 		// 获取歌单
@@ -39,7 +41,7 @@ func SetupRouter() *gin.Engine {
 		// 收藏歌曲
 		musicGroup.POST("/collect", controller.CollectSongToPlayList)
 		// 获取歌单歌曲
-		musicGroup.GET("collect", controller.GetPlayList)
+		musicGroup.GET("/collect", controller.GetPlayList)
 		// 上传歌曲
 		musicGroup.POST("/upload", controller.UploadMusic)
 	}

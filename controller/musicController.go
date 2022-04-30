@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 /*
@@ -32,7 +33,7 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, "Invalid json provided")
 		return
 	}
-	user, err := models.GetUserInfo(u.UnionID)
+	user, err := models.GetUserInfo(u.Name)
 	if err != nil || user.Password != u.Password {
 		c.JSON(http.StatusUnauthorized, "Please provide valid login details")
 		return
@@ -42,7 +43,10 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusUnprocessableEntity, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, token)
+	c.JSON(http.StatusOK, gin.H{
+		"token": token,
+		"user":  user,
+	})
 }
 
 func ValidateTokenHandler(c *gin.Context) {
@@ -96,6 +100,19 @@ func UploadMusic(c *gin.Context) {
 		fmt.Println(err)
 	}
 	c.String(http.StatusOK, songFile.Filename)
+}
+
+func GetSongs(c *gin.Context) {
+	pageNumberString := c.Query("pageNumber")
+	pageSizeString := c.Query("pageSize")
+	pageNumber, _ := strconv.Atoi(pageNumberString)
+	pageSize, _ := strconv.Atoi(pageSizeString)
+	songs, err := models.GetSongs(pageNumber, pageSize)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+	} else {
+		c.JSON(http.StatusOK, songs)
+	}
 }
 
 func GetSongResource(c *gin.Context) {

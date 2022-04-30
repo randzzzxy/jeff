@@ -15,7 +15,7 @@ func CreateCollect(collect *Collect) (err error) {
 	return
 }
 
-func GetSongs(playListId int) ([]Song, error) {
+func GetPlayListSongs(playListId int) ([]Song, error) {
 	var songs []Song
 	if err := dao.DB.Table("songs").Joins("inner join collects "+
 		"on collects.song_id = songs.id where play_list_id=?", playListId).Find(&songs).Error; err != nil {

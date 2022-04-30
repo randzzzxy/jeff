@@ -50,7 +50,7 @@ func CollectSongToPlayList(c *gin.Context) {
 func GetPlayList(c *gin.Context) {
 	idString := c.Query("play_list_id")
 	id, _ := strconv.Atoi(idString)
-	list, err := models.GetSongs(id)
+	list, err := models.GetPlayListSongs(id)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 	} else {
