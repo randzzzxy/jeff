@@ -29,11 +29,13 @@ func SetupRouter() *gin.Engine {
 		// 登陆
 		userGroup.POST("/login", controller.Login)
 	}
+	//获取歌曲
+	r.GET("/music/all", controller.GetSongs)
 	musicGroup := r.Group("music")
 	musicGroup.Use(controller.ValidateTokenHandler)
 	{
-		//获取歌曲
-		musicGroup.GET("/all", controller.GetSongs)
+		// 使用token登陆
+		musicGroup.GET("/token", controller.LoginByToken)
 		// 创建歌单
 		musicGroup.POST("/playlist", controller.CreatePlayList)
 		// 获取歌单

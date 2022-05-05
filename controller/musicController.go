@@ -49,6 +49,16 @@ func Login(c *gin.Context) {
 	})
 }
 
+func LoginByToken(c *gin.Context) {
+	id, _ := c.Get("user_id")
+	user, err := models.GetUserInfoById(id.(int))
+	if err != nil {
+		c.JSON(http.StatusUnprocessableEntity, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, user)
+}
+
 func ValidateTokenHandler(c *gin.Context) {
 	tokenString := c.GetHeader("Authorization")
 	if tokenString == "" {
@@ -68,6 +78,7 @@ func ValidateTokenHandler(c *gin.Context) {
 
 func UploadMusic(c *gin.Context) {
 	id, _ := c.Get("user_id")
+	name := c.PostForm("name")
 	coverFile, coverErr := c.FormFile("cover")
 	lyricsFile, lyricsErr := c.FormFile("lyrics")
 	songFile, songErr := c.FormFile("song")
@@ -82,6 +93,7 @@ func UploadMusic(c *gin.Context) {
 		return
 	}
 	song := new(models.Song)
+	song.Name = name
 	song.AuthorId = id.(int)
 	song.SongUrl = songFile.Filename
 	song.CoverUrl = coverFile.Filename

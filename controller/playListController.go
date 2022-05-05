@@ -10,11 +10,9 @@ import (
 // CreatePlayList 创建歌单
 func CreatePlayList(c *gin.Context) {
 	playList := new(models.PlayList)
-	json := make(map[string]interface{})
-	c.BindJSON(&json)
 	id, _ := c.Get("user_id")
 	playList.UserId = id.(int)
-	playList.Name = json["play_list_name"].(string)
+	playList.Name = c.PostForm("play_list_name")
 	err := models.CreatePlayList(playList)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})

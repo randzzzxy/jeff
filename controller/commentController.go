@@ -48,8 +48,12 @@ func CreateReply(c *gin.Context) {
 	err := models.CreateReply(reply)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
+	}
+	replies, err2 := models.GetReply(reply.CommentId)
+	if err2 != nil {
+		c.JSON(http.StatusOK, gin.H{"error": err.Error()})
 	} else {
-		c.JSON(http.StatusOK, reply)
+		c.JSON(http.StatusOK, replies)
 	}
 }
 
